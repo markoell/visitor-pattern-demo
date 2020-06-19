@@ -15,15 +15,16 @@ namespace visitor_pattern_demo
             CountElementByType(typeof(PictureElement), root);
             CountElementByType(typeof(DocumentElement), root);
             CountElementByType(typeof(DirectoryElement), root);
-
-            var fileListVisitor = new FileListGeneratorVisitor();
-            root.Accept(fileListVisitor);
+            
+            Console.WriteLine();
+            ListFilesFromStructure(root);
 
             Console.WriteLine();
-            Console.WriteLine($"{fileListVisitor.FileNames.Count} Files found in Structure:");
-            foreach(var file in fileListVisitor.FileNames){
-                Console.WriteLine(file);
-            }
+            var fileRemover = new EmptyElementRemoveVisitor();
+            root.Accept(fileRemover);
+
+            Console.WriteLine();
+            ListFilesFromStructure(root);
         }
 
         private static void CountElementByType(Type elementType, Element element)
@@ -32,6 +33,19 @@ namespace visitor_pattern_demo
             element.Accept(counterVisitor);
 
             Console.WriteLine($"{counterVisitor.DocumentCount} {counterVisitor.DocumentType.Name} counted in structure.");
+        }
+
+        private static void ListFilesFromStructure(DirectoryElement root)
+        {
+            var fileListVisitor = new FileListGeneratorVisitor();
+            root.Accept(fileListVisitor);
+
+            Console.WriteLine();
+            Console.WriteLine($"{fileListVisitor.FileNames.Count} Files found in Structure:");
+            foreach (var file in fileListVisitor.FileNames)
+            {
+                Console.WriteLine(file);
+            }
         }
     }
 }
