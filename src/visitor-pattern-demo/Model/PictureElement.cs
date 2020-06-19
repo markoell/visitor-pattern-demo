@@ -4,11 +4,9 @@ namespace VisitorPatternDemo.Model
 {
     public class PictureElement : Element
     {
-        private string path;
 
-        public PictureElement(string path)
+        public PictureElement(string path) : base(path)
         {
-            this.path = path;
         }
 
         public override void Accept(IVisitor visitor){

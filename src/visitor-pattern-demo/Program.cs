@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using VisitorPatternDemo;
 using VisitorPatternDemo.Model;
 using VisitorPatternDemo.Visitors;
 
@@ -8,22 +6,32 @@ namespace visitor_pattern_demo
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
 
-            var root = new DirectoryElement(".\testdata");
+            var root = new DirectoryElement(@".\testdata");
 
-            var visitor = new DocumentCountVisitor(typeof(PictureElement));
-            root.Accept(visitor);
+            CountElementByType(typeof(ArchiveElement), root);
+            CountElementByType(typeof(PictureElement), root);
+            CountElementByType(typeof(DocumentElement), root);
+            CountElementByType(typeof(DirectoryElement), root);
 
-            Console.WriteLine($"Hello {visitor.DocumentType.Name} counted: {visitor.DocumentCount}");
+            var fileListVisitor = new FileListGeneratorVisitor();
+            root.Accept(fileListVisitor);
 
-            var visitor2 = new FileListGeneratorVisitor();
-            root.Accept(visitor2);
-
-            foreach(var file in visitor2.FileNames){
+            Console.WriteLine();
+            Console.WriteLine($"{fileListVisitor.FileNames.Count} Files found in Structure:");
+            foreach(var file in fileListVisitor.FileNames){
                 Console.WriteLine(file);
             }
+        }
+
+        private static void CountElementByType(Type elementType, Element element)
+        {
+            var counterVisitor = new DocumentCountVisitor(elementType);
+            element.Accept(counterVisitor);
+
+            Console.WriteLine($"{counterVisitor.DocumentCount} {counterVisitor.DocumentType.Name} counted in structure.");
         }
     }
 }

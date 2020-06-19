@@ -5,21 +5,19 @@ namespace VisitorPatternDemo.Model
 {
     public class DirectoryElement : Element
     {
-        private Element[] _children;
-        private string _path;
+        public Element[] Children { get; set; }
 
-        public DirectoryElement(string path)
+        public DirectoryElement(string path) : base(path)
         {
-            _path = path;
-            _children = Helper.BuildElementTree(path).ToArray();
+            Children = Helper.BuildElementTree(path).ToArray();
         }
 
         public override void Accept(IVisitor visitor){
-            visitor?.Visit(this);
-            foreach (var child in _children)
+            foreach (var child in Children)
             {
                 child.Accept(visitor);
             }
+            visitor?.Visit(this);
         }
     }
 }

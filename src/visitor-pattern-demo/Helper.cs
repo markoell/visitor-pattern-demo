@@ -13,15 +13,15 @@ namespace VisitorPatternDemo
         {
             foreach(var folder in System.IO.Directory.GetDirectories(path))
             {
-                string folderName = new System.IO.DirectoryInfo(folder).Name;
-                var element = new DirectoryElement(folderName);
+                //string folderName = new System.IO.DirectoryInfo(folder);
+                var element = new DirectoryElement(folder);
                 results.Add(element);
             }
 
-            foreach(var fileLeaf in System.IO.Directory.GetFiles(path))
+            foreach(var file in System.IO.Directory.GetFiles(path))
             {
-                var fileName = System.IO.Path.GetFileName(fileLeaf);
-                var element = GetLeafElement(fileLeaf);
+                //var fileName = System.IO.Path.GetFileName(file);
+                var element = GetLeafElement(file);
                 results.Add(element);
             }
         }
